@@ -8,7 +8,6 @@ will be scraped. If city/state is entered only houses will be scraped.
 
 from time import sleep
 import requests
-import functions_module
 from bs4 import BeautifulSoup
 import re
 from functions_module import stateUnabbreviate
