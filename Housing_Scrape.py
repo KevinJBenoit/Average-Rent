@@ -1,7 +1,7 @@
 
 """
 User enters either a zip code or city and state to search. If zip is entered, apartments + condos + houses + townhouses
-will be scraped. If city/state is entered only houses will be scraped.
+will be scraped. If city+state is entered either houses or apartments will be scrapped depending on user input.
 """
 
 
