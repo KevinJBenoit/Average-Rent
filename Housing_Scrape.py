@@ -1,7 +1,7 @@
 
 """
 User enters either a zip code or city and state to search. If zip is entered, apartments + condos + houses + townhouses
-will be scraped. If city+state is entered either houses or apartments will be scrapped depending on user input.
+will be scraped. If city/state is entered only houses will be scraped.
 """
 
 
@@ -22,14 +22,7 @@ zip_code_pattern = re.compile(r'\d{5}$')
 
 #prompt for a city search or zipcode search
 user_search = input("Please enter the zipcode or city and state you wish to search: (example: Colorado Springs, CO) \n")
-user_housing = input("Would you like to search houses or apartments? \n")
 
-if user_housing.lower() == "houses":
-    housing_type = "-houses"
-else:
-    housing_type = "-apartments"
-
-print("Average rental price: ")
 
 #regex test on user input
 result = zip_code_pattern.search(user_search)
@@ -41,6 +34,12 @@ if result:
 
 #if regex False, it is a city
 else:
+    user_housing = input("Would you like to search houses or apartments? \n")
+    if user_housing.lower() == "houses":
+        housing_type = "-houses"
+    else:
+        housing_type = "-apartments"
+
     city = user_search
     city_parse = city.split(',') #separates the city name and state abbreviation
     state = stateUnabbreviate(city_parse[1].strip()) #accesses the state initials, removes whitespace char, and send to function
@@ -57,6 +56,8 @@ else:
 #initiate number of rentals and price list
 number_of_rentals = 0
 all_prices = []
+
+print("Average rental price: ")
 
 #loops until there are no pages left to scrape
 while page_number:
