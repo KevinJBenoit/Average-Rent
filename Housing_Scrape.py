@@ -23,7 +23,6 @@ zip_code_pattern = re.compile(r'\d{5}$')
 #prompt for a city search or zipcode search
 user_search = input("Please enter the zipcode or city and state you wish to search: (example: Colorado Springs, CO) \n")
 
-print("Average rental price: ")
 
 #regex test on user input
 result = zip_code_pattern.search(user_search)
@@ -35,6 +34,12 @@ if result:
 
 #if regex False, it is a city
 else:
+    user_housing = input("Would you like to search houses or apartments? \n")
+    if user_housing.lower() == "houses":
+        housing_type = "-houses"
+    else:
+        housing_type = "-apartments"
+
     city = user_search
     city_parse = city.split(',') #separates the city name and state abbreviation
     state = stateUnabbreviate(city_parse[1].strip()) #accesses the state initials, removes whitespace char, and send to function
@@ -45,11 +50,14 @@ else:
         quit()
 
     city = city_parse[0] #access city name
-    search_url = state.lower() + "/" + city.replace(" ", "-").lower() + "-houses" #format into a proper url for houses only for citys
+    #https://www.rent.com/colorado/colorado-springs/apartments_condos_houses_townhouses
+    search_url = state.lower() + "/" + city.replace(" ", "-").lower() + housing_type #format into a proper url
 
 #initiate number of rentals and price list
 number_of_rentals = 0
 all_prices = []
+
+print("Average rental price: ")
 
 #loops until there are no pages left to scrape
 while page_number:
@@ -83,7 +91,7 @@ while page_number:
             all_prices.append(int(home_price))
             number_of_rentals += 1
 
-    sleep(3)#slow things down to be ethical   ʕ•ᴥ•ʔ    
+    sleep(2)#slow things down to be ethical   ʕ•ᴥ•ʔ    
 
     #check if there is another page button
     next_page = soup.find(class_="_1_EJB")

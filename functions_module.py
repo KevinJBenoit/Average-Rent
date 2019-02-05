@@ -1,6 +1,7 @@
 
 
-
+import requests
+from bs4 import BeautifulSoup
 
 #Used to convert given state abbreviations into the names for use
 ##Thank you Mike Shultz on ActiveState Code for this recipe. 
@@ -67,3 +68,23 @@ def stateUnabbreviate(abbreviation):
 }
 
 	return states.get(abbreviation)
+
+#Returns the city, state associated with the zipcode as a string
+def zipcode_lookup(zipcode):
+    
+    full_url = "https://www.unitedstateszipcodes.org/" + str(zipcode) + "/" 
+    #Server needed more information so I could get acceess to the page
+    agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
+    #Supply agent as the header for access
+    result = requests.get(full_url, headers=agent)
+    
+    soup = BeautifulSoup(result.text, "html.parser")
+
+    city_soup = soup.find("dl", class_= "dl-horizontal").find("dd").get_text()
+
+    return city_soup
+
+
+zipcode = input("Please give a zipcode \n")
+print(zipcode_lookup(zipcode))
+
