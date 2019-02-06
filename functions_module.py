@@ -2,6 +2,9 @@
 
 import requests
 from bs4 import BeautifulSoup
+from time import sleep
+import re
+
 
 #Used to convert given state abbreviations into the names for use
 ##Thank you Mike Shultz on ActiveState Code for this recipe. 
@@ -85,6 +88,10 @@ def zipcode_lookup(zipcode):
     return city_soup
 
 
-zipcode = input("Please give a zipcode \n")
-print(zipcode_lookup(zipcode))
+def zipcode_validate(user_input):
+    zip_code_pattern = re.compile(r'\d{5}$')
 
+    #regex test on user input
+    result_is_zipcode = zip_code_pattern.search(user_input)
+
+    return result_is_zipcode
