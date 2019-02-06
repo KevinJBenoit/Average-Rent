@@ -108,4 +108,3 @@ def scrape_rent(user_search):
     average_price = round((sum(all_prices)/number_of_rentals), 2)
 
     return average_price
-#print("$" + str(average_price) + "/month is the average price from", number_of_rentals, "rentals found.")
