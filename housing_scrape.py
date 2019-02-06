@@ -1,6 +1,8 @@
 
 """
-Function is passed either a zipcode or city/state. If zipcode is passed function will return rent from houses, apratments, condos, and townhouses. If city + state given function will ask for either houses or apartments to be searched and return average rent.
+Function is passed either zipcode or city/state and will have 2 return values.
+If zipcode all housing types will be scraped and rents averaged and zipcode housing type returned.
+If city + state passed an additional prompt for if houses or apartments will be scrapped, the rent and that housing type will be returned.
 """
 
 
@@ -9,30 +11,25 @@ from time import sleep
 import requests
 from bs4 import BeautifulSoup
 import re
-from functions_module import stateUnabbreviate
+from functions_module import stateUnabbreviate, zipcode_validate
 
 def scrape_rent(user_search):
 
     base_url = "https://www.rent.com/"
     page_number = 1
 
-    #regex pattern for zipcodes, 5 numbers
-    zip_code_pattern = re.compile(r'\d{5}$')
-
-    #prompt for a city search or zipcode search
-    #user_search = input("Please enter the zipcode or city and state you wish to search: (example: Colorado Springs, CO) \n")
-
-
     #regex test on user input
-    result_is_zipcode = zip_code_pattern.search(user_search)
+    result_is_zipcode = zipcode_validate(user_search)
 
     #if regex True, it is a zipcode
     if result_is_zipcode:
+        housing_type = None
         zipcode = result_is_zipcode.group()
         search_url = "zip-" + zipcode
 
     #if regex False, it is a city
     else:
+        #input for if houses or apartments will be scraped
         user_housing = input("Would you like to search houses or apartments? \n")
         if user_housing.lower() == "houses":
             housing_type = "-houses"
@@ -49,14 +46,14 @@ def scrape_rent(user_search):
             quit()
 
         city = city_parse[0] #access city name
-        #https://www.rent.com/colorado/colorado-springs/apartments_condos_houses_townhouses
+
         search_url = state.lower() + "/" + city.replace(" ", "-").lower() + housing_type #format into a proper url
 
     #initiate number of rentals and price list
     number_of_rentals = 0
     all_prices = []
 
-    print("Average rental price: ")
+    print("Fetching average rental price.... ")
 
     #loops until there are no pages left to scrape
     while page_number:
@@ -107,4 +104,8 @@ def scrape_rent(user_search):
 
     average_price = round((sum(all_prices)/number_of_rentals), 2)
 
-    return average_price
+
+    if housing_type:
+        return average_price, housing_type
+    else:
+        return average_price, result_is_zipcode.group()
