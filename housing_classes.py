@@ -17,6 +17,7 @@ class City():
 
     def city_update(self):
         now = datetime.datetime.now()
+        #thank you Eliot from SaltyCrane.com for example on getting current date and time using datetime
         self.last_update = now.strftime("%Y-%m-%d %H:%M")
 
     #takes a list, prices, and sets their average to self.average_apartments
