@@ -5,6 +5,7 @@ class City():
     def __init__(self, name, state):
         self.name = name
         self.state = state 
+        self.zipcodes = []
         self.total_average_rent = 0
         self.average_apartments = 0
         self.average_houses = 0
@@ -17,6 +18,8 @@ class City():
 
     def city_update(self):
         now = datetime.datetime.now()
+
+        #thank you Eliot from SaltyCrane.com for example on getting current date and time using datetime
         self.last_update = now.strftime("%Y-%m-%d %H:%M")
 
     #takes a list, prices, and sets their average to self.average_apartments
@@ -38,3 +41,19 @@ class City():
     def average_all(self):
         self.total_average_rent = (self.average_apartments + self.average_houses) / 2
     
+
+
+class Zipcode():
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+        self.average_rent = 0
+        self.city = ""
+        self.last_update = "-"
+    def __repr__(self):
+        return f"{self.zipcode} has an average rent of ${self.average_rent}/month. It was last updated on {self.last_update}"
+
+    def zipcode_update(self):
+        now = datetime.datetime.now()
+
+        #thank you Eliot from SaltyCrane.com for example on getting current date and time using datetime
+        self.last_update = now.strftime("%Y-%m-%d %H:%M")
