@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from time import sleep
 import re
-
+from csv import writer
 
 #Used to convert given state abbreviations into the names for use
 ##Thank you Mike Shultz on ActiveState Code for this recipe. 
@@ -72,6 +72,9 @@ def stateUnabbreviate(abbreviation):
 
 	return states.get(abbreviation)
 
+
+
+
 #Returns the city, state associated with the zipcode as a string
 def zipcode_lookup(zipcode):
     
@@ -87,6 +90,9 @@ def zipcode_lookup(zipcode):
 
     return city_soup
 
+
+
+
 #returns True or False if there was a Regex match
 def zipcode_validate(user_input):
     zip_code_pattern = re.compile(r'\d{5}$')
@@ -95,3 +101,18 @@ def zipcode_validate(user_input):
     result_is_zipcode = zip_code_pattern.search(user_input)
 
     return result_is_zipcode
+
+
+
+
+
+#save data into a csv file
+def create_city_file(list_of_cities):
+    #file is closed after code block finishes writing
+    with open("cities_data.csv", "w") as file:
+        csv_writer = writer(file)
+        #the header
+        csv_writer.writerow(["City", "State", "Zipcodes", "Total Zipcode Rent", "Rent-Houses", "Rent-Apartments", "Last Updated"])
+        #loop through list_of_cities and write their data into a row in the csv
+        for city in list_of_cities:
+            csv_writer.writerow([city.name, city.state, city.zipcodes, city.total_average_rent, city.average_houses, city.average_houses, city.last_update])
