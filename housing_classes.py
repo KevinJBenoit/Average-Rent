@@ -11,7 +11,7 @@ class City():
         self.average_houses = 0
         self.last_update = "-"
     def __repr__(self):
-        return f"name = {self.name}, state = {self.state}, total_average_rent = {self.total_average_rent}, average_apartments = {self.average_apartments}, average houses = {self.average_houses}, last_update = {self.last_update}"
+        return f"name = {self.name}, state = {self.state}, zipcodes: {self.zipcodes}, total_average_rent = {self.total_average_rent}, average_apartments = {self.average_apartments}, average houses = {self.average_houses}, last_update = {self.last_update}"
 
     def full_name(self):
         return self.name + ", " + self.state
