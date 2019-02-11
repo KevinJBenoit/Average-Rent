@@ -4,13 +4,14 @@ import datetime
 class City():
     def __init__(self, name, state):
         self.name = name
-        self.state = state 
-        self.total_average_rent = 0
+        self.state = state #full unabbreviated state name
+        self.zipcodes = {} #zipcodes with their average price
+        self.total_average_rent = 0 #average of all the zipcode prices entered
         self.average_apartments = 0
         self.average_houses = 0
         self.last_update = "-"
     def __repr__(self):
-        return f"name = {self.name}, state = {self.state}, total_average_rent = {self.total_average_rent}, average_apartments = {self.average_apartments}, average houses = {self.average_houses}, last_update = {self.last_update}"
+        return f"name = {self.name}, state = {self.state}, zipcodes: {self.zipcodes}, total_average_rent = {self.total_average_rent}, average_apartments = {self.average_apartments}, average houses = {self.average_houses}, last_update = {self.last_update}"
 
     def full_name(self):
         return self.name + ", " + self.state
@@ -36,6 +37,3 @@ class City():
         self.average_houses /= len(prices)
         self.city_update() #renew the last_update to the current date/time
 
-    def average_all(self):
-        self.total_average_rent = (self.average_apartments + self.average_houses) / 2
-    
