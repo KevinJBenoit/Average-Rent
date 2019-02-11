@@ -10,5 +10,5 @@ Data will be pickled to store data past program execution.
 
 If the same location is searched again, the appropriate data member will be updated with the more current average rental price and written to the pickle file.
 
-Example of output:
+Example of output from 3 zipcode searches; 92835 - 92831 - 92835 and 3 city/state seraches; Fullerton, CA "houses" - Fullerton, CA "apartments" - Fullerton, CA "houses"
 [name = Fullerton, state = California, zipcodes: {'92835': 3425.0, '92831': 1800.89}, total_average_rent = 2612.945, average_apartments = 1617.92, average houses = 2915.98, last_update = 2019-02-11 13:12]
