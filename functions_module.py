@@ -93,6 +93,7 @@ def zipcode_lookup(zipcode):
 
 
 
+
 #returns True or False if there was a Regex match
 def zipcode_validate(user_input):
     zip_code_pattern = re.compile(r'\d{5}$')

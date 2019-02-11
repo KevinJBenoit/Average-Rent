@@ -36,3 +36,4 @@ class City():
             self.average_houses += price
         self.average_houses /= len(prices)
         self.city_update() #renew the last_update to the current date/time
+
