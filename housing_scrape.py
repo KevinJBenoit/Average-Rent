@@ -109,4 +109,4 @@ def scrape_rent(user_search):
         return average_price, housing_type
     else:
         #housing_type was None, set housing_type to the zipcode given
-       return average_price, result_is_zipcode.group()
+        return average_price, result_is_zipcode.group()

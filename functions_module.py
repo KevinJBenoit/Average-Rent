@@ -93,7 +93,6 @@ def zipcode_lookup(zipcode):
 
 
 
-
 #returns True or False if there was a Regex match
 def zipcode_validate(user_input):
     zip_code_pattern = re.compile(r'\d{5}$')
@@ -113,7 +112,7 @@ def create_city_file(list_of_cities):
     with open("cities_data.csv", "w") as file:
         csv_writer = writer(file)
         #the header
-        csv_writer.writerow(["City", "State", "Zipcodes", "Total Zipcode Rent", "Rent-Houses", "Rent-Apartments", "Last Updated"])
+        csv_writer.writerow(["City", "State", "Zipcodes", "Average Zipcode Rent", "Rent-Houses", "Rent-Apartments", "Last Updated"])
         #loop through list_of_cities and write their data into a row in the csv
         for city in list_of_cities:
-            csv_writer.writerow([city.name, city.state, city.zipcodes, city.total_average_rent, city.average_houses, city.average_houses, city.last_update])
+            csv_writer.writerow([city.name, city.state, city.zipcodes, city.total_average_rent, city.average_houses, city.average_apartments, city.last_update])
