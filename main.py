@@ -26,6 +26,7 @@ if is_zipcode:
     #create a city with the appropriate zipcode
     city1 = City(city_name, state)
     city1.zipcodes.update({location: average_price}) #update the dictionary with a key value pair {zipcode : price}
+    city1.total_average_rent = average_price
     city1.city_update() #a new value was added, update the latest date/time
 
 
@@ -65,51 +66,66 @@ except IOError:
 
 #if there are any cities already in the pickle file
 if all_cities:
+    #set flag to false
+    found = False
     
     #for all the cities present in the pickle file
     for data_city in all_cities:
         
+        #if the recent search matches a location in the pickle file
+        if str(data_city.name) == str(city1.name) and str(data_city.state) == str(city1.state):
 
-        #if zipcode was entered
-        if is_zipcode:
-            #if there any codes already present
-            if data_city.zipcodes:
-                #for all the codes in this pickle city. Create a copy so that dictionary can be updated while iterating
-                for codes in data_city.zipcodes.copy():
-                    #if the zipcode already is present
-                    if codes == location:
-                        #update that zipcode
-                        data_city.zipcodes[location] = city1.zipcodes[location]
-                    #the zipcode is unique, add it to the pickle dictionary
-                    else:
-                        data_city.zipcodes.update({location: average_price})    
-                   
-                        
-            #this is the first zipcode for this city
-            else:
-                data_city.zipcodes.update({location: average_price})
+            #if zipcode was entered
+            if is_zipcode:
+                #if there any codes already present
+                if data_city.zipcodes:
+                    #for all the codes in this pickle city. Create a copy so that dictionary can be updated while iterating
+                    for codes in data_city.zipcodes.copy():
+                        #if the zipcode already is present
+                        if codes == location:
+                            #update that zipcode
+                            data_city.zipcodes[location] = city1.zipcodes[location]
+                            data_city.last_update = city1.last_update
+                            found = True
+                            break
+
+                    #the zipcode does not match the ones already present, add it to the pickle dictionary
+                    if found == False:                     
+                            data_city.zipcodes.update({location: average_price})
+                            data_city.last_update = city1.last_update
+                            found = True
+                            
+
+                #this is the first zipcode for this city                
+                else:
+                    data_city.zipcodes.update({location: average_price})
+                    data_city.last_update = city1.last_update
+                    found = True 
+                    break        
+
+                #average all the zipcode prices, update the date/time
+                data_city.total_average_rent = sum(data_city.zipcodes.values()) / len(data_city.zipcodes)
                 data_city.last_update = city1.last_update
-            #average all the zipcode prices, update the date/time
-            data_city.total_average_rent = sum(data_city.zipcodes.values()) / len(data_city.zipcodes)
-            data_city.last_update = city1.last_update
+                break
 
-
-        #elif city was entered and is already present, update the pickled values with the more current one searched
-        elif str(data_city.name) == str(city1.name) and str(data_city.state) == str(city1.state):
-            #if houses were entered, update houses
-            if location_type == "-houses":
-                data_city.average_houses = city1.average_houses
+            #else a city was entered
             else:
-            #if apartments were entered, update apartments
-                data_city.average_apartments = city1.average_apartments
+                #if houses were entered, update houses
+                if location_type == "-houses":
+                    data_city.average_houses = city1.average_houses
+                    found = True
+                else:
+                #if apartments were entered, update apartments
+                    data_city.average_apartments = city1.average_apartments
+                    found = True
             
-            #update the date/time
-            data_city.last_update = city1.last_update
+                #update the date/time
+                data_city.last_update = city1.last_update
 
 
-        #location was not a zipcode, and is a new city location
-        else:
-            all_cities.append(city1)
+    # if location was not already in the pickle file ######################FOUND == False, WHY
+    if found == False:
+        all_cities.append(city1)
 
 
 #else, this is the first city in the pickle file append the city info
@@ -124,7 +140,16 @@ with open("cities.pickle", "wb") as file:
 
 #read the newly written pickle file
 with open("cities.pickle", "rb") as file:
-        load_pickle = pickle.load(file)
+        pickle_data = pickle.load(file)
 
 #print the pickle file info
-print(load_pickle)
+print(pickle_data)
+
+
+response = input("Do you wish to export the data to a csv file?: (yes/no) ")
+
+if response.lower() == "yes":
+    functions_module.create_city_file(pickle_data)
+    print("Written")
+
+print("Finished")
