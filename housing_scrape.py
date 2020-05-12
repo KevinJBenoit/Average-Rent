@@ -87,7 +87,7 @@ def scrape_rent(user_search):
                 all_prices.append(int(home_price))
                 number_of_rentals += 1
 
-        sleep(2)#slow things down to be ethical   ʕ•ᴥ•ʔ    
+        sleep(2)#slow things down to be ethical    
 
         #check if there is another page button
         next_page = soup.find(class_="_1_EJB")
